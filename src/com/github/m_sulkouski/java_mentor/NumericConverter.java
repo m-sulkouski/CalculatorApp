@@ -1,15 +1,15 @@
 package com.github.m_sulkouski.java_mentor;
 
-interface NumberConverter {
+class NumericConverter {
 
 
-    default int convertToArabic(String arabicNumber) {
+    int arabicToInteger(String arabicNumber) {
         int number;
         try {
             number = Integer.parseInt(arabicNumber);
         }
         catch (NumberFormatException e) {
-            if (romanToArabic(arabicNumber) == 0)
+            if (romanToInteger(arabicNumber) == 0)
                 throw e;
 
             return 0;
@@ -20,7 +20,7 @@ interface NumberConverter {
         return 0;
     }
 
-    default int romanToArabic(String romanNumber) {
+    int romanToInteger(String romanNumber) {
         switch (romanNumber.toUpperCase()) {
             case "I":
                 return 1;
@@ -44,5 +44,32 @@ interface NumberConverter {
                 return 10;
         }
         return 0;
+    }
+
+    String integerToRoman(int number) {
+        switch (number) {
+            case 1:
+                return "I";
+            case 2:
+                return "II";
+            case 3:
+                return "III";
+            case 4:
+                return "IV";
+            case 5:
+                return "V";
+            case 6:
+                return "VI";
+            case 7:
+                return "VII";
+            case 8:
+                return "VIII";
+            case 9:
+                return "IX";
+            case 10:
+                return "X";
+                default:
+                    return null;
+        }
     }
 }

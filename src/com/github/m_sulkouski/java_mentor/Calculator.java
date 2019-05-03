@@ -2,43 +2,27 @@ package com.github.m_sulkouski.java_mentor;
 
 
 class Calculator {
-    private int firstNumber;
-    private int secondNumber;
-    private String operator;
+
+    private int result;
 
     public Calculator(int firstNumber, int secondNumber, String operator) {
-        this.firstNumber = firstNumber;
-        this.secondNumber = secondNumber;
-        this.operator = operator;
+
+        calculate(firstNumber, secondNumber, operator);
     }
 
-    public int calculate() {
+    public void calculate(int firstNumber, int secondNumber, String operator) {
         if (operator.equals("/"))
-            return divide();
+            this.result = firstNumber / secondNumber;
         if (operator.equals("*"))
-            return multiply();
+            this.result = firstNumber * secondNumber;
         if (operator.equals("+"))
-            return add();
+            this.result = firstNumber + secondNumber;
         if (operator.equals("-"))
-            return subtract();
-        return -10;
+            this.result = firstNumber - secondNumber;
     }
 
 
-
-    private int add() {
-        return this.firstNumber + this.secondNumber;
-    }
-
-    private int subtract() {
-        return this.firstNumber - this.secondNumber;
-    }
-
-    private int multiply() {
-        return this.firstNumber * this.secondNumber;
-    }
-
-    private int divide() {
-        return this.firstNumber / this.secondNumber;
+    public int getResult() {
+        return result;
     }
 }

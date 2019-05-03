@@ -15,7 +15,7 @@ class Main {
             expression = getExpression();
             ExpressionProcessor processor = new ExpressionProcessor(expression);
             if (processor.isLegalExpression()) {
-                System.out.println("Result: " + processor.calculator.calculate());
+                System.out.println(processor.getResult());
             }
             else {
                 System.out.println("The expression is incorrect!");

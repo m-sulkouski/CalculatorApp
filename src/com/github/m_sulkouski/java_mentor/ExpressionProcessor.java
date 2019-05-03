@@ -1,39 +1,50 @@
 package com.github.m_sulkouski.java_mentor;
 
-class ExpressionProcessor implements NumberConverter, OperatorConverter {
-    private String operator;
-    private int firstNumber;
-    private int secondNumber;
+class ExpressionProcessor {
+
     Calculator calculator;
+    NumericConverter converter;
     private boolean legalExpression;
+    private boolean isArabic;
 
 
     public ExpressionProcessor(String expression) {
-        legalExpression = convertExpression(expression.split(" "));
-        if (legalExpression)
-            calculator = new Calculator(this.firstNumber, this.secondNumber, this.operator);
+        convertExpression(expression.split(" "));
     }
 
     private boolean convertExpression(String[] splitExpression) {        //Converts first and third strings to numbers, 2nd to operator. Returns true if legal expression, false if illegal
         try {
             if (splitExpression.length > 3) {
                 System.out.println("Only two operands allowed!");
+                legalExpression = false;
                 return false;
             }
+            String operator = null;
+            converter = new NumericConverter();
 
-            this.firstNumber = convertToArabic(splitExpression[0]);
-            this.secondNumber = convertToArabic(splitExpression[2]);
+            int firstNumber = converter.arabicToInteger(splitExpression[0]);
+            int secondNumber = converter.arabicToInteger(splitExpression[2]);
             if (firstNumber == 0 || secondNumber == 0) {
-                firstNumber = romanToArabic(splitExpression[0]);
-                secondNumber = romanToArabic(splitExpression[2]);
+
+                firstNumber = converter.romanToInteger(splitExpression[0]);
+                secondNumber = converter.romanToInteger(splitExpression[2]);
                 if(firstNumber == 0 || secondNumber == 0) {
                     firstNumber = 0;
                     secondNumber = 0;
-                    System.out.println("At less one number is irrelevant!");
+                    System.out.println("At less one operand is illegal!");
                     return false;
                 }
             }
-            this.operator = operatorConvert(splitExpression[1]);
+            else
+                this.isArabic = true;
+
+            if (splitExpression[1].equals("/") || splitExpression[1].equals("*") || splitExpression[1].equals("-") || splitExpression[1].equals("+")) {
+                operator = splitExpression[1];
+                this.legalExpression = true;
+            }
+
+            if (legalExpression)
+                calculator = new Calculator(firstNumber, secondNumber, operator);
         }
 
         catch (ArrayIndexOutOfBoundsException e) {
@@ -42,7 +53,7 @@ class ExpressionProcessor implements NumberConverter, OperatorConverter {
         }
 
         catch (NumberFormatException e) {
-            System.out.println("Wrong number format!");
+            System.out.println("Wrong operand format!");
             return false;
         }
 
@@ -57,5 +68,16 @@ class ExpressionProcessor implements NumberConverter, OperatorConverter {
 
     public boolean isLegalExpression() {
         return legalExpression;
+    }
+
+    public boolean isArabic() {
+        return isArabic;
+    }
+
+    public String getResult() {
+        if (isArabic())
+            return "Result: " + calculator.getResult();
+        else
+            return "Result: " + converter.integerToRoman(calculator.getResult());
     }
 }
